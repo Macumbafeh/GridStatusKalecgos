@@ -98,6 +98,7 @@ GridStatusKalecgos.defaultDB = {
             b = 0,
             a = 1,
         },
+        ["timer"] = 10,
     },
 }
 
@@ -137,6 +138,21 @@ local curseOptions = {
             color.g = g
             color.b = b
             color.a = a or 1
+        end,
+    },
+    ["timer"] = {
+        type = "range",
+        name = "Threshold",
+        desc = "Time in seconds when the color change occurs (default 10)",
+        order = 89.5,
+        min = 0,
+        max = 20,
+        step = 1,
+        get = function()
+            return GridStatusKalecgos.db.profile.alert_kalecgos.timer
+        end,
+        set = function(v)
+            GridStatusKalecgos.db.profile.alert_kalecgos.timer = v
         end,
     },
 }
@@ -240,7 +256,7 @@ function GridStatusKalecgos:DebuffTimer()
         local color = settings.color1
 
         -- use color2 if unit has had the debuff for 10 or more seconds
-        if elapsed >= 10 then
+        if elapsed >= (settings.timer or 10) then
             color = settings.color2
         end
 
