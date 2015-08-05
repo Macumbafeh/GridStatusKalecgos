@@ -110,16 +110,16 @@ local curseOptions = {
         order = 88,
         hasAlpha = true,
         get = function ()
-                  local color = GridStatusKalecgos.db.profile["alert_kalecgos"].color1
-                  return color.r, color.g, color.b, color.a
-              end,
+            local color = GridStatusKalecgos.db.profile["alert_kalecgos"].color1
+            return color.r, color.g, color.b, color.a
+        end,
         set = function (r, g, b, a)
-                  local color = GridStatusKalecgos.db.profile["alert_kalecgos"].color1
-                  color.r = r
-                  color.g = g
-                  color.b = b
-                  color.a = a or 1
-              end,
+            local color = GridStatusKalecgos.db.profile["alert_kalecgos"].color1
+            color.r = r
+            color.g = g
+            color.b = b
+            color.a = a or 1
+        end,
     },
     ["color2"] = {
         type = "color",
@@ -128,16 +128,16 @@ local curseOptions = {
         order = 89,
         hasAlpha = true,
         get = function ()
-                  local color = GridStatusKalecgos.db.profile["alert_kalecgos"].color2
-                  return color.r, color.g, color.b, color.a
-              end,
+            local color = GridStatusKalecgos.db.profile["alert_kalecgos"].color2
+            return color.r, color.g, color.b, color.a
+        end,
         set = function (r, g, b, a)
-                  local color = GridStatusKalecgos.db.profile["alert_kalecgos"].color2
-                  color.r = r
-                  color.g = g
-                  color.b = b
-                  color.a = a or 1
-              end,
+            local color = GridStatusKalecgos.db.profile["alert_kalecgos"].color2
+            color.r = r
+            color.g = g
+            color.b = b
+            color.a = a or 1
+        end,
     },
 }
 
@@ -158,11 +158,11 @@ function GridStatusKalecgos:OnEnable()
 end
 
 function GridStatusKalecgos:OnDisable()
-	if not self:IsEventRegistered("SpecialEvents_UnitDebuffGained") then
-		-- if unitdebuffgained isn't registered then OnEnable hasn't been called
-		-- and there's nothing to disable
-		return
-	end
+    if not self:IsEventRegistered("SpecialEvents_UnitDebuffGained") then
+        -- if unitdebuffgained isn't registered then OnEnable hasn't been called
+        -- and there's nothing to disable
+        return
+    end
     self:UnregisterEvent("SpecialEvents_UnitDebuffGained")
     self:UnregisterEvent("SpecialEvents_UnitDebuffLost")
 
@@ -175,22 +175,22 @@ function GridStatusKalecgos:OnDisable()
 end
 
 function GridStatusKalecgos:Reset()
-	self:OnDisable()
+    self:OnDisable()
     self:OnEnable()
 end
 
 function GridStatusKalecgos:SpecialEvents_UnitDebuffGained(unit, debuff, apps, type, tex, rank, index)
-	if unit == "target" or unit == "focus" then
-		return
-	end
+    if unit == "target" or unit == "focus" then
+        return
+    end
 
     if debuff == BS["Curse of Boundless Agony"] then
-	local settings = self.db.profile["alert_kalecgos"]
+        local settings = self.db.profile["alert_kalecgos"]
 
         self:Debug("Curse Gained:", debuff)
         self:Debug("Curse Gained:", BS["Curse of Boundless Agony"])
 
-	-- Immediately start at color1 to overwrite any lower priority icons before the next timer tick
+        -- Immediately start at color1 to overwrite any lower priority icons before the next timer tick
         self.core:SendStatusGained(UnitName(unit), "alert_kalecgos",
                                    settings.priority, false,
                                    settings.color1,
@@ -204,9 +204,9 @@ function GridStatusKalecgos:SpecialEvents_UnitDebuffGained(unit, debuff, apps, t
 end
 
 function GridStatusKalecgos:SpecialEvents_UnitDebuffLost(unit, debuff, apps, type, tex, rank)
-	if unit == "target" or unit == "focus" then
-		return
-	end
+    if unit == "target" or unit == "focus" then
+        return
+    end
 
     if debuff == BS["Curse of Boundless Agony"] then
         self._timers[unit] = nil
